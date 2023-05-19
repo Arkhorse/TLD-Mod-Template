@@ -1,3 +1,5 @@
+using ModSettings;
+
 namespace TEMPLATE
 {
     internal class Settings : JsonModSettings
@@ -37,7 +39,7 @@ namespace TEMPLATE
         // This is used to load the settings
         internal static void OnLoad()
         {
-            _settings.AddToModSettings("Fuel Manager");
+            _settings.AddToModSettings($"{BuildInfo.Name}");
         }
     }
 }
