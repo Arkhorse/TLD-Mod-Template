@@ -1,4 +1,4 @@
-namespace StartingSkills
+namespace TEMPLATE
 {
     public class Logger
     {

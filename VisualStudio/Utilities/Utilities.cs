@@ -1,4 +1,4 @@
-namespace StartingSkills
+namespace TEMPLATE
 {
     internal class Utilities
     {
