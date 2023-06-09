@@ -1,2 +1,2 @@
-# TLD-Mod-Template
-A template for making mods in the game The Long Dark
+# TLD-Mod-Template-Advanced
+ An advanced version of the TLD Mod Template

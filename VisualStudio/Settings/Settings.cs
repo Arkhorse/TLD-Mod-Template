@@ -4,7 +4,7 @@ namespace TEMPLATE
 {
     internal class Settings : JsonModSettings
     {
-        internal static readonly Settings _settings = new();
+        internal static Settings Instance { get; } = new();
 
         #region Settings
         // Setup your settings here
@@ -13,12 +13,15 @@ namespace TEMPLATE
         [Description("Description")] // this is the description for the above setting. Shown when hovering on the right side
         public bool name = true; // these should always be public and not static (otherwise you will need to move some code)
 
+        [Name("Mod Toggle")]
+        public bool EnableMod = true;
+
         #endregion
 
         // this is used to set things when user clicks confirm. If you dont need this ability, dont include this method
         protected override void OnConfirm()
         {
-            
+            base.OnConfirm();
         }
 
         // this is called whenever there is a change. Ensure it contains the null bits that the base method has
@@ -26,20 +29,22 @@ namespace TEMPLATE
         {
             if ( field.Name == nameof(name) )
             {
-                RefreshFields();
+                Instance.Refresh();
             }
+            base.OnChange(field, oldValue, newValue);
         }
 
         // use this as a shortcut to enable/disable and fields on change
-        internal void RefreshFields()
+        internal void Refresh()
         {
-            SetFieldVisible(nameof(name), true);
+            SetFieldVisible(nameof(name), Instance.EnableMod);
         }
         
         // This is used to load the settings
         internal static void OnLoad()
         {
-            _settings.AddToModSettings($"{BuildInfo.Name}");
+            Instance.AddToModSettings($"{BuildInfo.GUIName}");
+            Instance.Refresh();
         }
     }
 }

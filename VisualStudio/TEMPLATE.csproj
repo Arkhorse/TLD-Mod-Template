@@ -32,6 +32,7 @@
   <!-- Most commonly used using's. Add to this so you dont need to define them in the cs files -->
   <ItemGroup>
     <Using Include="System.Reflection" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
     <Using Include="Il2Cpp" />
     <Using Include="HarmonyLib" />
     <Using Include="MelonLoader" />
@@ -40,6 +41,9 @@
 
   <PropertyGroup>
     <TheLongDarkPath>O:\Steam\steamapps\common\TheLongDark</TheLongDarkPath> <!-- This should point to wherever your games primary EXE is -->
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Title>REPLACEME</Title> <!-- name of the mod -->
     <Authors>REPLACEME</Authors> <!-- CURRENT author of the project -->
     <Company>$(AssemblyName)</Company>

@@ -6,9 +6,9 @@ namespace TEMPLATE
         public override void OnInitializeMelon()
         {
             Settings.OnLoad(); // used to load settings, if you have it defined
-            // This is enclosed in a build conditional. This means if the build is a DEBUG build, this code will be encoded. Otherwise it will not
+            // This is enclosed in a build conditional. This means if the build is a DEBUG build, this code will be part of the mod. Otherwise it will not
 #if DEBUG
-            MelonLogger.Msg($"[{BuildInfo.Name}]: Mod has loaded with version: {BuildInfo.Version}");
+            Log($"Mod has loaded with version: {BuildInfo.Version}");
 #endif
         }
     }

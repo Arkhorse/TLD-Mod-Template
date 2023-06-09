@@ -1,0 +1,1 @@
+In order for this to work, 7zip must be added to your Environmental Variables. Google how to do that if you dont already know how
