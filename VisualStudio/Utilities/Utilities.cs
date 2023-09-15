@@ -5,7 +5,7 @@ namespace TEMPLATE
         // NOTE: These "Get" methods are volitile. Ensure it is always up to date as otherwise it can break anything tied to GearItem
         // This is used to load prefab info of a GearItem
         [return: NotNullIfNotNull(nameof(name))]
-        public static GearItem GetGearItemPrefab(string name) => GearItem.LoadGearItemPrefab(name).GetComponent<GearItem>();
+        public static GearItem GetGearItemPrefab(string name) => GearItem.LoadGearItemPrefab(name);
         [return: NotNullIfNotNull(nameof(name))]
         public static ToolsItem GetToolItemPrefab(string name) => GearItem.LoadGearItemPrefab(name).GetComponent<ToolsItem>();
         [return: NotNullIfNotNull(nameof(name))]
