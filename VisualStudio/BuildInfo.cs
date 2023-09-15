@@ -1,31 +1,38 @@
-﻿namespace StartingSkills
+﻿namespace TEMPLATE
 {
     public static class BuildInfo
     {
         #region Mandatory
         /// <summary>The machine readable name of the mod (no special characters or spaces)</summary>
-        public const string Name            = "StartingSkills";
+        public const string Name                            = "TEMPLATE";
         /// <summary>Who made the mod</summary>
-        public const string Author          = "The Illusion";
+        public const string Author                          = string.Empty;
         /// <summary>Current version (Using Major.Minor.Build) </summary>
-        public const string Version         = "1.0.0";
+        public const string Version                         = "1.0.0";
+        /// <summary>Name used on GUI's, like ModSettings</summary>
+        public const string GUIName                         = "TEMPLATE";
+        /// <summary>The minimum Melon Loader version that your mod requires</summary>
+        public const string MelonLoaderVersion              = "0.6.1";
         #endregion
 
         #region Optional
         /// <summary>What the mod does</summary>
-        public const string Description     = null;
+        public const string Description                     = string.Empty;
         /// <summary>Company that made it</summary>
-        public const string Company         = null;
+        public const string Company                         = string.Empty;
         /// <summary>A valid download link</summary>
-        public const string DownloadLink    = null;
+        public const string DownloadLink                    = string.Empty;
         /// <summary>Copyright info</summary>
-        public const string Copyright       = "Copyright ©  2023";
+        /// <remarks>When updating the year, use the StartYear-CurrentYear format</remarks>
+        public const string Copyright                       = "Copyright © 2023";
         /// <summary>Trademark info</summary>
-        public const string Trademark       = null;
+        public const string Trademark                       = string.Empty;
         /// <summary>Product Name (Generally use the Name)</summary>
-        public const string Product         = "StartingSkills";
+        public const string Product                         = "TEMPLATE";
         /// <summary>Culture info</summary>
-        public const string Culture         = null;
+        public const string Culture                         = string.Empty;
+        /// <summary>Priority of your mod. Most of the time you should not need to change this</summary>
+        public const int Priority                           = 0;
         #endregion
     }
 }
