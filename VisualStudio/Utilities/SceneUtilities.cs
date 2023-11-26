@@ -12,6 +12,13 @@ namespace TEMPLATE.Utilities
 {
     public class SceneUtilities
     {
+        /// <summary>
+        /// This contains a list of scenes that wont otherwise be caught in the checks
+        /// </summary>
+        public static List<string> BlacklistedScenes = new()
+        {
+
+        };
 
         /// <summary>
         /// Used to check if the current scene is EMPTY
@@ -90,9 +97,10 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && sceneName.Contains("Region", StringComparison.InvariantCultureIgnoreCase) || sceneName.Contains("Zone", StringComparison.InvariantCultureIgnoreCase))
+            // BlacklistedScenes MUST fail first
+            if (sceneName != null)
             {
-                return true;
+                if (!BlacklistedScenes.Contains(sceneName) && sceneName.Contains("Region", StringComparison.InvariantCultureIgnoreCase) || sceneName.Contains("Zone", StringComparison.InvariantCultureIgnoreCase)) return true;
             }
 
             return false;
