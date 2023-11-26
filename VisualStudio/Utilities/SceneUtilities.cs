@@ -48,10 +48,10 @@ namespace TEMPLATE.Utilities
 
             if (sceneName != null && sceneName.Contains("Boot", StringComparison.InvariantCultureIgnoreCase) )
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
