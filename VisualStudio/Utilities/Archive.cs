@@ -1,5 +1,15 @@
-﻿using MelonLoader.Utils;
-using TEMPLATE.Utilities.JSON;
+﻿// ---------------------------------------------
+// Archive - by The Illusion
+// ---------------------------------------------
+// Reusage Rights ------------------------------
+// You are free to use this script or portions of it in your own mods, provided you give me credit in your description and maintain this section of comments in any released source code
+//
+// Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
+// ---------------------------------------------
+
+using MelonLoader.Utils;
+using TEMPLATE.Utilities.JSON; //CHANGEME
 
 namespace TEMPLATE.Utilities
 {
@@ -54,7 +64,7 @@ namespace TEMPLATE.Utilities
         /// </summary>
         public void Load()
         {
-            Archives = JsonFile.Load<Dictionary<string, bool>>(ArchiveConfigPath);
+            Archives = JsonFile.Load<Dictionary<string, bool>>(ArchiveConfigPath); //CHANGEME
         }
 
         /// <summary>
@@ -62,7 +72,7 @@ namespace TEMPLATE.Utilities
         /// </summary>
         public void Save()
         {
-            JsonFile.Save<Dictionary<string, bool>>(ArchiveConfigPath, Archives);
+            JsonFile.Save<Dictionary<string, bool>>(ArchiveConfigPath, Archives); //CHANGEME
         }
 
         /// <summary>
