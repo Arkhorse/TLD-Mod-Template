@@ -7,28 +7,36 @@
 // Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
-using Microsoft.Extensions.Logging;
 using TEMPLATE.Utilities.Enums; // CHANGE: TEMPLATE
 
 namespace TEMPLATE.Utilities.Logger
 {
 	/// <summary>
-	/// Simple enum to handle the different types of logging
+	/// 
 	/// </summary>
-	/// <remarks>
-	/// <para>Normal, General use. This is used by default</para>
-	/// <para>Separator, if you want to print a separator</para>
-	/// <para>IntraSeparator, if you want to print a header</para>
-	/// </remarks>
-	public enum LoggingSubType { Normal, Separator, IntraSeparator }
-
 	public class ComplexLogger
 	{
-		public ComplexLogger()
+		/// <summary>
+		/// 
+		/// </summary>
+		public ComplexLogger() : this(null) { }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="levels"></param>
+		public ComplexLogger(FlaggedLoggingLevel[]? levels)
 		{
-			AddLevel(FlaggedLoggingLevel.None);
-			AddLevel(FlaggedLoggingLevel.Exception);
-		}
+            AddLevel(FlaggedLoggingLevel.None);
+            AddLevel(FlaggedLoggingLevel.Exception);
+
+			if (levels == null) return;
+
+			foreach (var level in levels)
+			{
+				AddLevel(level);
+			}
+        }
 
 		/// <summary>
 		/// The current logging level. Levels are bitwise added or removed.
@@ -43,13 +51,13 @@ namespace TEMPLATE.Utilities.Logger
 		{
 			if (CurrentLevel.HasFlag(level))
 			{
-				Log(FlaggedLoggingLevel.Debug, $"Attempting to add already existing level: {level}");
+				Log($"Attempting to add already existing level: {level}", FlaggedLoggingLevel.Debug);
 				return;
 			}
 
 			CurrentLevel |= level;
 
-			Log(FlaggedLoggingLevel.Debug, $"Added flag {level}");
+			Log($"Added flag {level}", FlaggedLoggingLevel.Debug);
 		}
 
 		/// <summary>
@@ -61,19 +69,42 @@ namespace TEMPLATE.Utilities.Logger
 		{
 			if (level == FlaggedLoggingLevel.None)
 			{
-				Log(FlaggedLoggingLevel.Debug, "Attempting to remove \"FlaggedLoggingLevel.None\" is not supported");
+				Log("Attempting to remove \"FlaggedLoggingLevel.None\" is not supported", FlaggedLoggingLevel.Debug);
 				return false;
 			}
 			else if (level == FlaggedLoggingLevel.Exception)
 			{
-				Log(FlaggedLoggingLevel.Debug, "Attempting to remove \"FlaggedLoggingLevel.Exception\" is not supported");
+				Log("Attempting to remove \"FlaggedLoggingLevel.Exception\" is not supported", FlaggedLoggingLevel.Debug);
 				return false;
 			}
 
 			CurrentLevel &= ~level;
 
-			Log(FlaggedLoggingLevel.Debug, $"Removed flag {level}");
+			Log($"Removed flag {level}", FlaggedLoggingLevel.Debug);
 			return true;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="level"></param>
+		/// <param name="parameters"></param>
+		public void Log(string message, FlaggedLoggingLevel level, params object[] parameters)
+		{
+			Log(message, null, level, LoggingSubType.Normal, parameters);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="exception"></param>
+		/// <param name="level"></param>
+		/// <param name="parameters"></param>
+		public void Log(string message, System.Exception exception, FlaggedLoggingLevel level, params object[] parameters)
+		{
+			Log(message, exception, level, LoggingSubType.Normal, parameters);
 		}
 
 		/// <summary>
@@ -88,10 +119,8 @@ namespace TEMPLATE.Utilities.Logger
 		/// <para>Use <see cref="WriteSeperator(object[])"/> or <see cref="WriteIntraSeparator(string, object[])"/> for seperators without using the flagged level</para>
 		/// <para>There is also <see cref="WriteStarter"/> if you require a prebuild startup message to display regardless of user settings (DONT DO THIS)</para>
 		/// </remarks>
-		public void Log(FlaggedLoggingLevel level, string message, LoggingSubType LogSubType = LoggingSubType.Normal, Exception? exception = null, params object[] parameters)
+		public void Log(string message, System.Exception? exception, FlaggedLoggingLevel level, LoggingSubType LogSubType, params object[] parameters)
 		{
-			Log(FlaggedLoggingLevel.Debug, $"Log was triggered, current flags: {CurrentLevel}. Called flag: {level}");
-
 			if (LogSubType != LoggingSubType.Normal)
 			{
 				if (LogSubType == LoggingSubType.Separator)
@@ -129,7 +158,7 @@ namespace TEMPLATE.Utilities.Logger
 						Write($"[CRITICAL] {message}", Color.red, FontStyle.Bold, parameters);
 						break;
 					case FlaggedLoggingLevel.Exception:
-						WriteException(message, exception, parameters);
+						WriteException(message, exception);
 						break;
 					default:
 						break;
@@ -139,22 +168,24 @@ namespace TEMPLATE.Utilities.Logger
 			return;
 		}
 
-		/// <summary>
-		/// The base log method
-		/// </summary>
-		/// <param name="message">The formated string to add as the message</param>
-		/// <param name="parameters">Any additional params</param>
-		private void Write(string message, params object[] parameters)
-		{
-			// sadly I cant find a way to dynamically set the singleton. The LoggerInstance is not accessable via this class
+#pragma warning disable CA1822 // Mark members as static
+        /// <summary>
+        /// The base log method
+        /// </summary>
+        /// <param name="message">The formated string to add as the message</param>
+        /// <param name="parameters">Any additional params</param>
+        private void Write(string message, params object[] parameters)
+        {
+			// sadly I cant find a way to dynamically set the singleton (without requiring more work to use). The LoggerInstance is not accessable via this class
 			Melon<Main>.Logger.Msg(message, parameters); // CHANGE: Main
 		}
+#pragma warning restore CA1822 // Mark members as static
 
-		/// <summary>
-		/// Logs a prebuilt startup message
-		/// </summary>
-		/// <remarks>Requires use of a <see cref="BuildInfo"/> class with a property named <see cref="BuildInfo.Version"/></remarks>
-		public void WriteStarter()
+        /// <summary>
+        /// Logs a prebuilt startup message
+        /// </summary>
+        /// <remarks>Requires use of a <see cref="BuildInfo"/> class with a property named <see cref="BuildInfo.Version"/></remarks>
+        public void WriteStarter()
 		{
 			Write($"Mod loaded with v{BuildInfo.Version}");
 		}
@@ -204,13 +235,12 @@ namespace TEMPLATE.Utilities.Logger
 		/// </summary>
 		/// <param name="message">The formated string to add as the message. Displayed before the exception</param>
 		/// <param name="exception">The exception thrown</param>
-		/// <param name="parameters">Any additional params</param>
 		/// <remarks>
 		/// <para>This is done as building the exception otherwise can be tedious</para>
 		/// </remarks>
-		private void WriteException(string message, Exception? exception, params object[] parameters)
+		private void WriteException(string message, System.Exception? exception)
 		{
-			StringBuilder sb = new();
+			System.Text.StringBuilder sb = new();
 
 			sb.Append("[EXCEPTION]");
 			sb.Append(message);
@@ -218,7 +248,7 @@ namespace TEMPLATE.Utilities.Logger
 			if (exception != null) sb.AppendLine(exception.Message);
 			else sb.AppendLine("Exception was null");
 
-			Write(sb.ToString(), Color.red, FontStyle.Bold, parameters);
+			Write(sb.ToString(), UnityEngine.Color.red, UnityEngine.FontStyle.Bold);
 		}
 	}
 }
