@@ -8,17 +8,100 @@
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
 
+using System.Text.Json.Serialization;
+using TEMPLATE.Utilities.JSON;
+
 namespace TEMPLATE.Utilities
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SceneUtilities
     {
         /// <summary>
-        /// This contains a list of scenes that wont otherwise be caught in the checks
+        /// 
         /// </summary>
-        public static List<string> BlacklistedScenes = new()
+        public class BlackListed
         {
+            /// <summary>
+            /// This contains a list of scenes that wont otherwise be caught in the checks
+            /// </summary>
+            [JsonInclude]
+            public List<string>? Scenes = new()
+            {
 
-        };
+            };
+
+            /// <summary>
+            /// 
+            /// </summary>
+            [JsonIgnore]
+            public string ConfigFile { get; } = "";
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="scene"></param>
+            public void Add(string scene)
+            {
+                if (Scenes.Contains(scene)) return;
+                Scenes.Add(scene);
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="scene"></param>
+            public void Remove(string scene)
+            {
+                if (Scenes.Contains(scene)) Scenes.Remove(scene);
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public void Serialize()
+            {
+                JsonFile.Save<List<string>?>(ConfigFile, Scenes);
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public void Deserialize()
+            {
+                Scenes = JsonFile.Load<List<string>>(ConfigFile);
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public BlackListed() { }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="ConfigFile"></param>
+            public BlackListed(string ConfigFile)
+            {
+                this.ConfigFile = ConfigFile;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static BlackListed GetBlackListed { get; } = new();
+
+        /// <summary>
+        /// Get if the current scene is indoor
+        /// </summary>
+        /// <param name="scene">true if you want the scene, false if you want the environment</param>
+        /// <returns></returns>
+        public static bool IsSceneIndoor(bool scene)
+        {
+            return (GameManager.GetWeatherComponent().IsIndoorScene() && scene) || GameManager.GetWeatherComponent().IsIndoorEnvironment();
+        }
 
         /// <summary>
         /// Used to check if the current scene is EMPTY
@@ -29,12 +112,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && sceneName.Contains("Empty", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
+            return sceneName != null && sceneName.Contains("Empty", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -46,12 +124,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && sceneName.Contains("Boot", StringComparison.InvariantCultureIgnoreCase) )
-            {
-                return true;
-            }
-
-            return false;
+            return sceneName != null && sceneName.Contains("Boot", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -63,12 +136,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && sceneName.StartsWith("MainMenu", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
+            return sceneName != null && sceneName.StartsWith("MainMenu", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -80,12 +148,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && IsSceneEmpty(sceneName) || IsSceneBoot(sceneName) || IsSceneMenu(sceneName))
-            {
-                return false;
-            }
-
-            return true;
+            return sceneName != null && !IsSceneEmpty(sceneName) && !IsSceneBoot(sceneName) && !IsSceneMenu(sceneName);
         }
 
         /// <summary>
@@ -97,13 +160,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            // BlacklistedScenes MUST fail first
-            if (sceneName != null)
-            {
-                if (!BlacklistedScenes.Contains(sceneName) && sceneName.Contains("Region", StringComparison.InvariantCultureIgnoreCase) || sceneName.Contains("Zone", StringComparison.InvariantCultureIgnoreCase)) return true;
-            }
-
-            return false;
+            return sceneName != null && !GetBlackListed.Scenes.Contains(sceneName) && (sceneName.Contains("Region", StringComparison.InvariantCultureIgnoreCase) || sceneName.Contains("Zone", StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -115,12 +172,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && sceneName.Contains("SANDBOX", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return false;
-            }
-
-            return true;
+            return sceneName != null && sceneName.EndsWith("SANDBOX", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -132,12 +184,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && sceneName.Contains("DLC01", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return false;
-            }
-
-            return true;
+            return sceneName != null && sceneName.EndsWith("DLC01", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -149,12 +196,7 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && sceneName.Contains("DARKWALKER", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return false;
-            }
-
-            return true;
+            return sceneName != null && sceneName.Contains("DARKWALKER", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -166,38 +208,25 @@ namespace TEMPLATE.Utilities
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null && IsSceneSandbox(sceneName) || IsSceneDLC01(sceneName) || IsSceneDarkWalker(sceneName))
-            {
-                return false;
-            }
-
-            return true;
+            return sceneName != null && (IsSceneSandbox(sceneName) || IsSceneDLC01(sceneName) || IsSceneDarkWalker(sceneName));
         }
 
         /// <summary>
         /// Used to check if the current scene is valid for weather
         /// </summary>
         /// <param name="sceneName">The name of the scene to check, if null will use <c>GameManager.m_ActiveScene</c></param>
+        /// <param name="IndoorOverride"></param>
         /// <returns></returns>
-        public static bool IsValidSceneForWeather(string sceneName)
+        public static bool IsValidSceneForWeather(string sceneName, bool IndoorOverride)
         {
             sceneName ??= GameManager.m_ActiveScene;
 
-            if (sceneName != null)
-            {
-                bool flag = ((IsSceneBase(sceneName)) && !(IsSceneAdditive(sceneName)));
-
-                if (flag && !GameManager.GetWeatherComponent().IsIndoorScene())
-                {
-                    return true;
-                }
-                else if (GameManager.GetWeatherComponent().IsIndoorScene() && Settings.Instance.WeatherNotificationsIndoors)
-                {
-                    return true;
-                }
-            }
-            
-            return false;
+            // this is done this way to make it easier to see the logic
+            return sceneName != null
+                && (
+                    ( IsSceneBase(sceneName) && !(IsSceneAdditive(sceneName)) ) && !GameManager.GetWeatherComponent().IsIndoorScene()
+                    )
+                || (GameManager.GetWeatherComponent().IsIndoorScene() && IndoorOverride);
         }
     }
 }
