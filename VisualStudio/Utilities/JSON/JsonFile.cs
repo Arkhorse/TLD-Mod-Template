@@ -7,95 +7,114 @@
 // Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
+using System.Text.Json;
+using TEMPLATE.Utilities;
+using TEMPLATE.Utilities.Exceptions;
 
 namespace TEMPLATE.Utilities.JSON
 {
     public class JsonFile
     {
-        public static JsonSerializerOptions DefaultOptions { get; } = new JsonSerializerOptions()
+        /// <summary>
+        /// Gets the default set of options
+        /// </summary>
+        /// <returns></returns>
+        public static JsonSerializerOptions GetDefaultOptions()
         {
-            WriteIndented = true, // pretty print
-            IncludeFields = true // use [JsonInclude] on properties you want to include, otherwise it wont be
-        };
+            return new JsonSerializerOptions()
+            {
+                WriteIndented = true,   // pretty print
+                IncludeFields = true    // use [JsonInclude] on properties you want to include, otherwise it wont be
+            };
+        }
 
         #region Syncronous
+        /// <summary>
+        /// Save the JSON file
+        /// </summary>
+        /// <typeparam name="T">The class reference</typeparam>
+        /// <param name="configFileName">The absolute path of the file to save</param>
+        /// <param name="Tinput">An instance of <typeparamref name="T"/> with the data you want to save</param>
+        /// <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to load the file</param>
+        /// <exception cref="BadMemeException"></exception>
         public static void Save<T>(string configFileName, T Tinput, JsonSerializerOptions? options = null)
         {
             try
             {
-                options ??= DefaultOptions;
+                options ??= GetDefaultOptions();
                 using FileStream file = File.Open(configFileName, FileMode.Create, FileAccess.Write, FileShare.None);
                 JsonSerializer.Serialize<T>(file, Tinput, options);
                 file.Dispose();
             }
-            catch
+            catch (System.Exception e)
             {
-                Logging.LogError($"Attempting to save {configFileName} failed");
-                throw;
+                throw new BadMemeException($"Attempting to save {configFileName} failed", e);
             }
         }
 
-        public static T? Load<T>(string configFileName, JsonSerializerOptions? options = null)
+        /// <summary>
+        /// Load a JSON file
+        /// </summary>
+        /// <typeparam name="T">The class reference</typeparam>
+        /// <param name="configFileName">The absolute path of the file to save</param>
+        /// <param name="createFile">Create the file if it doesnt exist</param>
+        /// <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to save the file</param>
+        /// <returns>An instance of <typeparamref name="T"/> with the data desearalized from the JSON file</returns>
+        /// <exception cref="BadMemeException"></exception>
+        public static T? Load<T>(string configFileName, bool createFile = false, JsonSerializerOptions? options = null)
         {
+            if (!File.Exists(configFileName))
+            {
+                if (createFile)
+                {
+                    Save<T>(configFileName, default(T), options);
+                }
+                else
+                {
+                    throw new BadMemeException($"Requested JSON file does not exist, {configFileName}");
+                }
+            }
             try
             {
-                options ??= DefaultOptions;
+                options ??= GetDefaultOptions();
                 using FileStream file = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                 var output = JsonSerializer.Deserialize<T>(file, options);
                 file.Dispose();
                 return output;
             }
-            catch
+            catch (System.Exception e)
             {
-                Logging.LogError($"Attempting to load {configFileName} failed");
-                throw;
+                throw new BadMemeException($"Attempting to load the config file failed, file: {configFileName}", e);
             }
         }
         #endregion
         #region Async
+
         /// <summary>
-        /// Loads a given JSON file
+        /// Async load a JSON file
         /// </summary>
-        /// <typeparam name="T">The class to deserialize</typeparam>
-        /// <param name="configFileName">absolute path to the file</param>
-        /// <returns>new class based on file contents</returns>
-        public static async Task<T?> LoadAsync<T>(string configFileName, JsonSerializerOptions? options = null)
+        /// <typeparam name="T">The class reference</typeparam>
+        /// <param name="configFileName">The absolute path of the file to save</param>
+        /// <param name="createFile">Create the file if it doesnt exist</param>
+        /// <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to save the file</param>
+        /// <returns>An instance of <typeparamref name="T"/> with the data desearalized from the JSON file</returns>
+        /// <exception cref="BadMemeException"></exception>
+        public static async Task<T?> LoadAsync<T>(string configFileName, bool createFile = false, JsonSerializerOptions? options = null)
         {
-            try
-            {
-                options ??= DefaultOptions;
-                await using FileStream file = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var output = await JsonSerializer.DeserializeAsync<T>(file, options);
-                await file.DisposeAsync();
-                return output;
-            }
-            catch
-            {
-                Logging.LogError($"Attempting to load the config file failed, file: {configFileName}");
-                throw;
-            }
+            return await Task.Run(() => Load<T>(configFileName, true, options));
         }
 
         /// <summary>
-        /// Saves a new JSON file
+        /// Async save the JSON file
         /// </summary>
-        /// <typeparam name="T">The class to serialize</typeparam>
-        /// <param name="configFileName">absolute path to the file</param>
-        /// <param name="Tinput">an instance of the given class with information filled</param>
+        /// <typeparam name="T">The class reference</typeparam>
+        /// <param name="configFileName">The absolute path of the file to save</param>
+        /// <param name="Tinput">An instance of <typeparamref name="T"/> with the data you want to save</param>
+        /// <param name="options">OPTIONAL: Options to use when saving the file. You MUST use the same options to load the file</param>
+        /// <exception cref="BadMemeException"></exception>
         public static async Task SaveAsync<T>(string configFileName, T Tinput, JsonSerializerOptions? options = null)
         {
-            try
-            {
-                options ??= DefaultOptions;
-                await using FileStream file = File.Open(configFileName, FileMode.Create, FileAccess.Write, FileShare.None);
-                await JsonSerializer.SerializeAsync<T>(file, Tinput, options);
-                await file.DisposeAsync();
-            }
-            catch
-            {
-                Logging.LogError($"Attempting to save failed");
-                throw;
-            }
+            await Task.Run(() => Save<T>(configFileName, Tinput, options));
         }
         #endregion
     }
