@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" encoding="UTF-8">
 
 	<!-- DO NOT CHANGE ANYTHING BETWEEN THESE (unless you know 100% what you are changing)-->
-	<!-- Further info: This defines critical project details, like the net version, C# language version, null enable and do not generate assembly info (we need a custom one) -->
+	<!-- Further info: This defines critical project details, like the .net version, C# language version, null enable and do not generate assembly info (we need a custom one) -->
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>Latest</LangVersion>
@@ -13,28 +13,77 @@
 	</PropertyGroup>
 	<!-- DO NOT CHANGE ANYTHING BETWEEN THESE -->
 
+	<!-- This tells the assembly where to get the source -->
+	<PropertyGroup>
+		<!-- This forces you to properly document all objects (class, properties, ect) -->
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageProjectUrl>https://github.com/Arkhorse/TLD-Mod-Template</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Arkhorse/TLD-Mod-Template</RepositoryUrl>
+		<PackageTags>the long dark;the long dark mods</PackageTags>
+		<NeutralLanguage>en-CA</NeutralLanguage>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<!-- This should point to wherever your games primary EXE is -->
 		<TheLongDarkPath>O:\SteamLibrary\steamapps\common\TheLongDark</TheLongDarkPath>
-		<ReleaseFolderPath>P:\Modding\The Long Dark\MyMods\TLD-Mod-Template\Release</ReleaseFolderPath>
+		<Mods>$(TheLongDarkPath)\Mods</Mods>
+		<Plugins>$(TheLongDarkPath)\Plugins</Plugins>
+		<UserData>$(TheLongDarkPath)\UserData</UserData>
+		<UserLibs>$(TheLongDarkPath)\UserLibs</UserLibs>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- These paths are for various mod resources -->
+		<ModResources>P:\Modding\The Long Dark</ModResources>
+		<UPDATES>$(ModResources)\UPDATES</UPDATES>
+		<MyMods>$(ModResources)\MyMods</MyMods>
+		<Libraries>$(ModResources)\Libraries</Libraries>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- This is a new convention idea. All mods that are on github would be in one of these folders -->
+		<Github>$(ModResources)\Github</Github>
+		<GithubMyMods>$(Github)\MyMods</GithubMyMods>
+		<GithubContribuiting>$(Github)\Contribuiting</GithubContribuiting>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!--The path to this mod-->
+		<This>$(MyMods)\TLD-Mod-Template</This>
+		
+		<!--Path to a release folder-->
+		<ReleaseFolderPath>$(This)\Release</ReleaseFolderPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 	<!-- List of used references -->
 	<ItemGroup>
 		<!-- This is the base reference. MUST EXIST -->
-		<PackageReference Include="STBlade.Modding.TLD.Il2CppAssemblies.Windows" Version="2.17.0" />
+		<PackageReference Include="STBlade.Modding.TLD.Il2CppAssemblies.Windows" Version="2.25.0" />
 		<!-- This is only if you use the ModSettings -->
-		<PackageReference Include="STBlade.Modding.TLD.ModSettings"               Version="1.9.0"/>
+		<PackageReference Include="STBlade.Modding.TLD.ModSettings" Version="1.9.0" />
 		<!-- Only if you need ModComponent -->
-		<PackageReference Include="STBlade.Modding.TLD.ModComponent"              Version="6.0.1"/>
+		<PackageReference Include="STBlade.Modding.TLD.ModComponent" Version="6.2.3" />
 		<!-- Only if you need LocalizationUtilities -->
-		<PackageReference Include="STBlade.Modding.TLD.LocalizationUtilities"     Version="2.0.0" />
+		<PackageReference Include="STBlade.Modding.TLD.LocalizationUtilities" Version="2.0.0" />
 		<!-- Only if you need CraftingRevisions  -->
-		<PackageReference Include="STBlade.Modding.TLD.CraftingRevisions"         Version="2.0.1" />
+		<PackageReference Include="STBlade.Modding.TLD.CraftingRevisions" Version="2.2.3" />
 		<!-- Only if you need GearSpawner -->
-		<PackageReference Include="STBlade.Modding.TLD.GearSpawner"               Version="2.3.1" />
+		<PackageReference Include="STBlade.Modding.TLD.GearSpawner" Version="2.3.1" />
 		<!-- Only if you need ModData  -->
-		<PackageReference Include="STBlade.Modding.TLD.ModData"                   Version="1.5.1" />
+		<PackageReference Include="STBlade.Modding.TLD.ModData" Version="1.5.1" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="ComplexLogger">
+	    <HintPath>..\..\..\Libraries\ComplexLogger.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<!-- Most commonly used using's. Add to this so you dont need to define them in the cs files -->
@@ -45,6 +94,7 @@
 		<Using Include="HarmonyLib" />
 		<Using Include="MelonLoader" />
 		<Using Include="UnityEngine" />
+		<!--#region Modded Libraries-->
 		<!-- Only if your using ModSettings -->
 		<Using Include="ModSettings" />
 		<!-- Only if your using ModComponent -->
@@ -57,12 +107,13 @@
 		<Using Include="GearSpawner" />
 		<!-- Only if your using ModData -->
 		<Using Include="ModData" />
+		<!--#endregion-->
 	</ItemGroup>
 
 	<!-- This is a build event. It will copy your dll to the currently defined TheLongDarkPath's Mods folder -->
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<!-- This copies the mods files to the games mod dir -->
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TheLongDarkPath)/Mods" />
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Mods)" />
 		<!-- This copies the mods files to a designated release folder. Speeds up finding the dll after a build -->
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseFolderPath)" />
 	</Target>
