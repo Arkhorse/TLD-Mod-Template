@@ -10,29 +10,35 @@
 
 namespace TEMPLATE.Utilities
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class LiquidUtilities
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
+
         /// <summary>
         /// Gets the current liquid type
         /// </summary>
-        /// <param name="liquid">Liquid type to get</param>
-        public static LiquidType GetLiquid(Liquid liquid)
+        /// <param name="liquid">The liquid type to fetch</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static LiquidType? GetLiquid(Liquid liquid)
         {
             try
             {
                 return liquid switch
                 {
-                    Liquid.Potable          => LiquidType.GetPotableWater(),
-                    Liquid.NonPotable       => LiquidType.GetNonPotableWater(),
-                    Liquid.Kerosene         => LiquidType.GetKerosene(),
-                    Liquid.Antiseptic       => LiquidType.GetAntiseptic()
+                    Liquid.Potable      => LiquidType.GetPotableWater(),
+                    Liquid.NonPotable   => LiquidType.GetNonPotableWater(),
+                    Liquid.Kerosene     => LiquidType.GetKerosene(),
+                    Liquid.Antiseptic   => LiquidType.GetAntiseptic(),
+                    _ => throw new NotImplementedException()
                 };
             }
-            catch
+            catch (Exception e)
             {
                 // this is here to give a proper error as otherwise ML does not log which mod threw the error
-                Logging.LogError("LiquidType was not found");
-                throw;
+                Main.Logger.Log("GetLiquid::LiquidType was not found", FlaggedLoggingLevel.Exception, e);
+                return null;
             }
         }
     }
