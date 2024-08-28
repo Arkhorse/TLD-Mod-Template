@@ -1,0 +1,1 @@
+This folder contains a barebones version of the Template. Use this if you dont want any of the extra code. This version does not use any of the NUGETS, which means you must manually ensure every assembly is referenced properly

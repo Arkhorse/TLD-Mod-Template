@@ -1,0 +1,84 @@
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" encoding="UTF-8">
+
+	<!-- DO NOT CHANGE ANYTHING BETWEEN THESE (unless you know 100% what you are changing)-->
+	<!-- Further info: This defines critical project details, like the .net version, C# language version, null enable and do not generate assembly info (we need a custom one) -->
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>Latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<!-- Debug is useless for a mod -->
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+	<!-- DO NOT CHANGE ANYTHING BETWEEN THESE -->
+
+	<PropertyGroup>
+		<!-- This should point to wherever your games primary EXE is -->
+		<TheLongDarkPath>O:\SteamLibrary\steamapps\common\TheLongDark</TheLongDarkPath>
+		<Mods>$(TheLongDarkPath)\Mods</Mods>
+		<Plugins>$(TheLongDarkPath)\Plugins</Plugins>
+		<UserData>$(TheLongDarkPath)\UserData</UserData>
+		<UserLibs>$(TheLongDarkPath)\UserLibs</UserLibs>
+		<!-- This is where you can tell VS to copy your mod to, which can speed help you find the dll -->
+		<ReleaseFolderPath>P:\Modding\The Long Dark\MyMods\TLD-Mod-Template\Barebones\Release</ReleaseFolderPath>
+	</PropertyGroup>
+
+	<!-- Most commonly used using's. Add to this so you dont need to define them in the cs files -->
+	<ItemGroup>
+		<Using Include="System.Reflection" />
+		<Using Include="System.Diagnostics.CodeAnalysis" />
+		<Using Include="Il2Cpp" />
+		<Using Include="HarmonyLib" />
+		<Using Include="MelonLoader" />
+		<Using Include="UnityEngine" />
+	</ItemGroup>
+
+	<!-- This is a build event. It will copy your dll to the currently defined TheLongDarkPath's Mods folder -->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<!-- This copies the mods files to the games mod dir -->
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Mods)" />
+		<!-- This copies the mods files to a designated release folder. Speeds up finding the dll after a build -->
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseFolderPath)" />
+	</Target>
+
+	<PropertyGroup>
+        <MelonLoaderPath>$(TheLongDarkPath)/MelonLoader/net6</MelonLoaderPath>
+        <Managed>$(TheLongDarkPath)/MelonLoader/Managed</Managed>
+        <IL2CPP>$(TheLongDarkPath)/MelonLoader/Il2CppAssemblies</IL2CPP>
+		<AssemblySearchPaths>$(AssemblySearchPaths);$(MelonLoaderPath);$(Managed);$(IL2CPP);$(Mods);</AssemblySearchPaths>
+	</PropertyGroup>
+
+    <!--This tells the compiler to not include referenced assemblies in the output folder.-->
+    <ItemDefinitionGroup>
+        <Reference>
+            <Private>False</Private>
+        </Reference>
+    </ItemDefinitionGroup>
+
+	<!-- List of used references -->
+	<ItemGroup>
+        <Reference Include="Il2CppInterop.Common">
+			<HintPath>$(MelonLoaderPath)\Il2CppInterop.Common.dll</HintPath>
+		  </Reference>
+		  <Reference Include="Il2CppInterop.Runtime">
+			<HintPath>$(MelonLoaderPath)\Il2CppInterop.Runtime.dll</HintPath>
+		  </Reference>
+		  <Reference Include="MelonLoader" />
+		  <Reference Include="0Harmony" />
+		  <Reference Include="Assembly-CSharp" />
+		  <Reference Include="Il2CppHOTween" />
+		  <Reference Include="Il2Cppmscorlib" />
+		  <Reference Include="Il2CppTLD.Addressables" />
+		  <Reference Include="Il2CppTLD.Game.Events.Runtime" />
+		  <Reference Include="Il2CppTLD.GameplayTag" />
+		  <Reference Include="Il2CppTLD.PDID" />
+		  <Reference Include="Il2CppTLD.Platform" />
+		  <Reference Include="Il2CppTLD.Player" />
+		  <Reference Include="Il2CppTLD.SaveState" />
+		  <Reference Include="Il2CppTLD.Serialization" />
+		  <Reference Include="Unity.Mathematics" />
+		  <Reference Include="Unity.TextMeshPro" />
+		  <Reference Include="UnityEngine" />
+	</ItemGroup>
+</Project>
