@@ -10,8 +10,18 @@
 
 namespace TEMPLATE.Utilities
 {
-	public static class WeatherUtilities
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public static class WeatherUtilities
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
+		/// <summary>
+		/// Gets the localization key for the given WeatherStage
+		/// </summary>
+		/// <param name="stage">The WeatherStage to get</param>
+		/// <returns>Loc key for the current stage</returns>
+		/// <remarks>
+		/// This is needed as the developers have not updated their own method with some of the stages
+		/// </remarks>
 		public static string? GetWeatherStageLoc(WeatherStage stage)
 		{
 			return stage switch
@@ -32,6 +42,15 @@ namespace TEMPLATE.Utilities
 			};
 		}
 
+		/// <summary>
+		/// Checks if the Aurora is fully active
+		/// </summary>
+		/// <param name="auroraManager">The current isntance of the AuroraManager. Typical usage is <see cref="GameManager.GetAuroraManager()"/> </param>
+		/// <returns>True if the Aurorae alpha is above the required percent to be fully active</returns>
+		/// <remarks>
+		/// <para>NOTE: Some Aurora activated objects initialize before the Aurora is fully active</para>
+		/// <para>There is no current method in the game for this that actually works.</para>
+		/// </remarks>
 		public static bool IsAuroraFullyActive(AuroraManager auroraManager)
 		{
 			if (auroraManager.GetNormalizedAlpha() >= auroraManager.m_FullyActiveValue) return true;
