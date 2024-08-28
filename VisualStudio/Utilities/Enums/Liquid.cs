@@ -8,7 +8,7 @@
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
 
-namespace TEMPLATE.Enums
+namespace TEMPLATE.Utilities.Enums
 {
     /// <summary>
     /// The game used to have this enum, this just recreats it for use in <see cref="LiquidUilities.GetLiquid(Liquid)"/>
