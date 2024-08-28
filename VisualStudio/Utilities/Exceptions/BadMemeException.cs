@@ -16,8 +16,8 @@ namespace TEMPLATE.Utilities.Exceptions
     /// <summary>
     /// An exception used mostly for mistakes that could happen during development, 'sanity check' type verification. And also for bad memes.
     /// </summary>
-    [Serializable]
-    public class BadMemeException : Exception
+    [System.Serializable]
+    public class BadMemeException : System.Exception
     {
 
         public BadMemeException() : base() { }
@@ -29,6 +29,6 @@ namespace TEMPLATE.Utilities.Exceptions
         public BadMemeException(string message) : base(message) { }
 
         
-        public BadMemeException(string message, Exception inner) : base(message, inner) { }
+        public BadMemeException(string message, System.Exception inner) : base(message, inner) { }
     }
 }
