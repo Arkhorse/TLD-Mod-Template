@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ---------------------------------------------
+// FileUtilities - by The Illusion
+// ---------------------------------------------
+// Reusage Rights ------------------------------
+// You are free to use this script or portions of it in your own mods, provided you give me credit in your description and maintain this section of comments in any released source code
+//
+// Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
+// ---------------------------------------------
+
 using System.Security.Cryptography;
-using TEMPLATE.Utilities.Enums;
 using System.Runtime.InteropServices;
 
 namespace TEMPLATE.Utilities
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class FileUtilities
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <summary>
         /// Attempts to get all file names in the given path
@@ -27,15 +33,26 @@ namespace TEMPLATE.Utilities
             }
             catch (Exception e)
             {
-                Main.Logger.Log(FlaggedLoggingLevel.Exception, $"TryGetDirectoryFiles({path}, {pattern}): Attempting to get file names failed:", e);
+                Main.Logger.Log($"TryGetDirectoryFiles({path}, {pattern}): Attempting to get file names failed:", FlaggedLoggingLevel.Exception, e);
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="ReplacementFile"></param>
         public static void ReplaceFile(string FileName, string ReplacementFile)
         {
             File.Replace(FileName, ReplacementFile, null);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="ReplacementFile"></param>
+        /// <param name="BackupFileName"></param>
         public static void ReplaceFile(string FileName, string ReplacementFile, string BackupFileName)
         {
             File.Replace(FileName, ReplacementFile, BackupFileName);
@@ -66,7 +83,7 @@ namespace TEMPLATE.Utilities
 
             if (result.Equals("-1"))
             {
-                Main.Logger.Log(FlaggedLoggingLevel.Error, $"Failed to check MD5 of file {inputFile}");
+                Main.Logger.Log($"Failed to check MD5 of file {inputFile}", FlaggedLoggingLevel.Error);
             }
             return result;
         }
@@ -103,7 +120,7 @@ namespace TEMPLATE.Utilities
             }
             catch (Exception ex)
             {
-                Main.Logger.Log(FlaggedLoggingLevel.Exception, "", exception:ex);
+                Main.Logger.Log("CreateMD5Hash::Caught exception:", FlaggedLoggingLevel.Exception, ex);
                 return "-1";
             }
 
