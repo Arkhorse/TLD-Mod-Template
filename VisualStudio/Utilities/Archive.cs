@@ -8,9 +8,6 @@
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
 
-using MelonLoader.Utils;
-using TEMPLATE.Utilities.JSON; //CHANGEME
-
 namespace TEMPLATE.Utilities
 {
     /// <summary>
@@ -44,13 +41,13 @@ namespace TEMPLATE.Utilities
         /// <summary>
         /// This constructor initializes the new Archive with a default path
         /// </summary>
-        public Archive() : this(Path.Combine(MelonEnvironment.ModsDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".json")) { }
+        public Archive() : this(Path.Combine(MelonLoader.Utils.MelonEnvironment.ModsDirectory, Assembly.GetExecutingAssembly().GetName().Name + ".json")) { }
 
         /// <summary>
         /// This constructor initializes a new Archive with <paramref name="archiveConfigPath"/> instead of a default path
         /// </summary>
         /// <param name="archiveConfigPath">
-        /// The absolute path to the archive. Use <see cref="Path.Combine(string[])"/> and <see cref="MelonEnvironment.ModsDirectory"/> to better get the actual mods directory
+        /// The absolute path to the archive. Use <see cref="Path.Combine(string[])"/> and <see cref="MelonLoader.Utils.MelonEnvironment.ModsDirectory"/> to better get the actual mods directory
         /// </param>
         public Archive(string archiveConfigPath)
         {
@@ -183,7 +180,7 @@ namespace TEMPLATE.Utilities
         /// <returns></returns>
         public List<string> GetInstalledModComponents()
         {
-            return Directory.GetFiles(MelonEnvironment.ModsDirectory, "*.modcomponent").ToList();
+            return Directory.GetFiles(MelonLoader.Utils.MelonEnvironment.ModsDirectory, "*.modcomponent").ToList();
         }
 
         /// <summary>
