@@ -10,7 +10,9 @@
 
 namespace TEMPLATE.Utilities
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public static class AiUtilities
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <summary>
         /// Checks if the current BaseAi is a rabbit
