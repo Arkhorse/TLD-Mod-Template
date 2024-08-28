@@ -10,7 +10,9 @@
 
 namespace TEMPLATE.Utilities
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public class GearMessageUtilities
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <summary>
         /// Adds a message to the <see cref="GearMessage"/> queue
