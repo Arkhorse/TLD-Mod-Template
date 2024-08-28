@@ -1,7 +1,8 @@
 // ---------------------------------------------
 // Spawner - by The Illusion
 // ---------------------------------------------
-// Reusage Rights ------------------------------
+// Reuse Rights 
+// ---------------------------------------------
 // You are free to use this script or portions of it in your own mods, provided you give me credit in your description and maintain this section of comments in any released source code
 //
 // Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -10,23 +11,60 @@
 
 namespace TEMPLATE
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Spawn
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void SetupSpawner()
+        {
+            // initial setup of the spawner values
+            Spawner spawner = new(
+                Settings.Instance.pilgrimSpawnExpectation,
+                Settings.Instance.voyagerSpawnExpectation,
+                Settings.Instance.stalkerSpawnExpectation,
+                Settings.Instance.interloperSpawnExpectation,
+                Settings.Instance.challengeSpawnExpectation,
+                Settings.Instance.storySpawnExpectation
+            );
+            spawner.Add();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+		public static void SetSpawner()
+		{
+			//CHANGEME
+			Spawner.SetProbability(Settings.Instance.pilgrimSpawnExpectation,        DifficultyLevel.Pilgram);
+			Spawner.SetProbability(Settings.Instance.voyagerSpawnExpectation,        DifficultyLevel.Voyager);
+			Spawner.SetProbability(Settings.Instance.stalkerSpawnExpectation,        DifficultyLevel.Stalker);
+			Spawner.SetProbability(Settings.Instance.interloperSpawnExpectation,     DifficultyLevel.Interloper);
+			Spawner.SetProbability(Settings.Instance.challengeSpawnExpectation,      DifficultyLevel.Challenge);
+			Spawner.SetProbability(Settings.Instance.storySpawnExpectation,          DifficultyLevel.Storymode);
+		}
+    }
+
     internal class Spawner
     {
-        private static float Pilgram       { get; set; }
+        private static float Pilgrim       { get; set; }
         private static float Voyager       { get; set; }
         private static float Stalker       { get; set; }
         private static float Interloper    { get; set; }
         private static float Challenge     { get; set; }
         private static float Story         { get; set; }
 
-        public Spawner(float pilgram, float voyager, float stalker, float interloper, float challenge, float story)
+        public Spawner(float pilgrim, float voyager, float stalker, float interloper, float challenge, float story)
         {
-            Pilgram        = Pilgram;
-            Voyager        = Voyager;
-            Stalker        = Stalker;
-            Interloper     = Interloper;
-            Challenge      = Challenge;
-            Story          = Story;
+            Pilgrim        = pilgrim;
+            Voyager        = voyager;
+            Stalker        = stalker;
+            Interloper     = interloper;
+            Challenge      = challenge;
+            Story          = story;
         }
 
         internal void Add()
@@ -38,7 +76,7 @@ namespace TEMPLATE
         {
             return diff switch
             {
-                DifficultyLevel.Pilgram         => Pilgram,
+                DifficultyLevel.Pilgram         => Pilgrim,
                 DifficultyLevel.Voyager         => Voyager,
                 DifficultyLevel.Stalker         => Stalker,
                 DifficultyLevel.Interloper      => Interloper,
@@ -53,7 +91,7 @@ namespace TEMPLATE
             switch (mode)
             {
                 case DifficultyLevel.Pilgram:
-                    Pilgram = probability;
+                    Pilgrim = probability;
                     break;
                 case DifficultyLevel.Voyager:
                     Voyager = probability;
