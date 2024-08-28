@@ -7,40 +7,70 @@
 // Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Ensure you change the namespace to whatever namespace your mod uses, so it doesnt conflict with other mods
 // ---------------------------------------------
-
+#pragma warning disable CS1591
 namespace TEMPLATE.Utilities
 {
-    public class ConversionUtilities
-    {
-        /// <summary>
-        /// Converts MPH to KM/H
-        /// </summary>
-        /// <param name="mph">The MPH to convert</param>
-        /// <returns></returns>
-		public static float ConvertMilesKilometerHour(float mph)
+	/// <summary>
+	/// 
+	/// </summary>
+	public class ConversionUtilities
+	{
+		public class Miles
 		{
-            return mph * 1.609344f;
-        }
+            /// <summary>
+            /// Converts MPH to M/S
+            /// </summary>
+            /// <param name="input">The MPH to convert</param>
+            /// <returns></returns>
+            public static double ToMetersPerSecond(double input)
+            {
+                return input * 0.44704;
+            }
 
-        /// <summary>
-        /// Converts MPH to M/S
-        /// </summary>
-        /// <param name="mph">The MPH to convert</param>
-        /// <returns></returns>
-		public static float ConvertMilesMetersSecond(float mph)
+            /// <summary>
+            /// Converts MPH to KM/H
+            /// </summary>
+            /// <param name="input">The MPH to convert</param>
+            /// <returns></returns>
+            public static double ToKilometersPerHour(double input)
+			{
+				return input * 1.609344;
+			}
+		}
+
+		public class Kilometers
 		{
-			return mph * 0.44704f;
-        }
+			/// <summary>
+			/// 
+			/// </summary>
+			/// <param name="input"></param>
+			/// <returns></returns>
+			public static double ToMetersPerSecond(double input)
+			{
+				return input / 3.6;
+			}
 
-        /// <summary>
-        /// Rounds the input up to the nearest int
-        /// </summary>
-        /// <param name="input">The float to convert</param>
-        /// <returns></returns>
-        public static int GetNormalizedSpeed(float input)
-        {
-            float num = Mathf.Ceil(input);
-            return (int)num;
-        }
-    }
+			public static double ToMilesPerHour(double input)
+			{
+                return input / 1.609344;
+            }
+		}
+
+		public class Meters
+		{
+
+		}
+
+		/// <summary>
+		/// Rounds the input up to the nearest int
+		/// </summary>
+		/// <param name="input">The float to convert</param>
+		/// <returns></returns>
+		public static int GetNormalizedSpeed(double input)
+		{
+			double num = Math.Round(input, 0, MidpointRounding.ToEven);
+			return (int)num;
+		}
+	}
 }
+#pragma warning restore CS1591
