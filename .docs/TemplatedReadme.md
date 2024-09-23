@@ -12,9 +12,9 @@
             width: 30%">
 
 
-| Version | Downloads | License |
-| :-----: | :-------: | :-----: |
-| ![](https://img.shields.io/github/v/release/Arkhorse/TLD-Mod-Template?sort=semver&display_name=release&style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FArkhorse%2FTLD-Mod-Template%2Freleases%2Flatest) | ![](https://img.shields.io/github/downloads/Arkhorse/TLD-Mod-Template/total?style=for-the-badge) | ![](https://img.shields.io/github/license/Arkhorse/TLD-Mod-Template?style=for-the-badge) |
+| Version | Downloads | License | Contribuiters |
+| :-----: | :-------: | :-----: | :-----------: |
+| ![](https://img.shields.io/github/v/release/Arkhorse/TLD-Mod-Template?sort=semver&display_name=release&style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FArkhorse%2FTLD-Mod-Template%2Freleases%2Flatest) | ![](https://img.shields.io/github/downloads/Arkhorse/TLD-Mod-Template/total?style=for-the-badge) | ![](https://img.shields.io/github/license/Arkhorse/TLD-Mod-Template?style=for-the-badge) | ![](https://img.shields.io/github/contributors/Arkhorse/TLD-Mod-Template?style=for-the-badge) |
 
 </div>
 
