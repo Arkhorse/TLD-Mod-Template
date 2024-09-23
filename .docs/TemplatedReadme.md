@@ -2,15 +2,19 @@
 
 <!-- This section contains the current version, the current downloads and the current license. Go to https://shields.io in order to update these links -->
 <!-- NOTES:
-    Keep the space between the div definitions otherwise this wont work
+    Keep the new line between the div definitions otherwise this wont work
+    ![] is all you need before the round brackets. The text in the round brackets wont be displayed. If you want to change the displayed text on the left side of the button use &label=DISPLAYEDTEXT. Note that you will need to use URL escape characters
+    ?style=for-the-badge this is the style for the button. This particular style seems to be the best currently available as of 2024/09/23
+    Dont use blank spaces when you dont need them. The headers should handle this
  -->
 <div style="margin-left: auto;
             margin-right: auto;
             width: 30%">
 
+
 | Version | Downloads | License |
 | :-----: | :-------: | :-----: |
-| ![GitHub release (with filter)](https://img.shields.io/github/v/release/Arkhorse/FuelManager) | ![GitHub all releases](https://img.shields.io/github/downloads/Arkhorse/FuelManager/total) | ![GitHub](https://img.shields.io/github/license/Arkhorse/FuelManager) |
+| ![](https://img.shields.io/github/v/release/Arkhorse/TLD-Mod-Template?sort=semver&display_name=release&style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FArkhorse%2FTLD-Mod-Template%2Freleases%2Flatest) | ![](https://img.shields.io/github/downloads/Arkhorse/TLD-Mod-Template/total?style=for-the-badge) | ![](https://img.shields.io/github/license/Arkhorse/TLD-Mod-Template?style=for-the-badge) |
 
 </div>
 
