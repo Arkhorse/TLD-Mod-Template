@@ -9,10 +9,10 @@
  -->
 <div style="margin-left: auto;
             margin-right: auto;
-            width: 30%">
+            width: 100%">
 
 
-| Version | Downloads | License | Contribuiters |
+| Version | Downloads | License | Contributors |
 | :-----: | :-------: | :-----: | :-----------: |
 | ![](https://img.shields.io/github/v/release/Arkhorse/TLD-Mod-Template?sort=semver&display_name=release&style=for-the-badge&link=https%3A%2F%2Fgithub.com%2FArkhorse%2FTLD-Mod-Template%2Freleases%2Flatest) | ![](https://img.shields.io/github/downloads/Arkhorse/TLD-Mod-Template/total?style=for-the-badge) | ![](https://img.shields.io/github/license/Arkhorse/TLD-Mod-Template?style=for-the-badge) | ![](https://img.shields.io/github/contributors/Arkhorse/TLD-Mod-Template?style=for-the-badge) |
 
@@ -24,7 +24,6 @@ This mods requires:
 - [ ] DLC <!-- Note which DLC this mod requires, if any -->
 - [ ] Mod # 1
 - [ ] Mod # 2
-
 # Features
 <!--
 This should be a bullet point list of everything the mod does
@@ -43,12 +42,10 @@ This should be a bullet point list of everything that you currently plan on crea
 <!--
 This should be a bullet point list of everything the user must do in order to use the mod, including installing ML
 -->
-
 # Localizations
 <!--
 This section should contain instructions on how to contribuite to the project for localization purposes
 -->
-
 # Credits
 <!--
 This should contain a list of everyone who has ever helped out with the mod, broken down into categories
